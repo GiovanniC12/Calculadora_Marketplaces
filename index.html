@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Preço</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Calculadora de Preço</h1>
+        <form id="priceForm">
+            <div class="mb-3">
+                <label for="purchaseValue" class="form-label">Valor de Compra (R$):</label>
+                <input type="text" class="form-control" id="purchaseValue" placeholder="Digite o valor de compra" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Calcular Preço Final</button>
+        </form>
+        <div class="mt-4">
+            <h3>Resultado:</h3>
+            <p id="result" class="fs-5">Preencha o valor e clique em calcular.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('priceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Pegar o valor de compra como float
+            const purchaseValueInput = document.getElementById('purchaseValue').value;
+            const purchaseValue = parseFloat(purchaseValueInput.replace(',', '.'));
+
+            if (isNaN(purchaseValue) || purchaseValue <= 0) {
+                document.getElementById('result').textContent = 'Por favor, insira um valor válido de compra.';
+                return;
+            }
+
+            // Calcular o preço final
+            let finalPrice = purchaseValue + 6; // Adicionar taxa fixa
+            finalPrice += finalPrice * 1.5;    // Adicionar margem de 150%
+            finalPrice += finalPrice * 0.16;   // Adicionar taxa de 16%
+            finalPrice += finalPrice * 0.18;   // Adicionar imposto de 18%
+
+            // Adicionar o frete, se aplicável
+            if (finalPrice >= 79) {
+                finalPrice += 22.95;
+            }
+
+            // Exibir o resultado formatado
+            document.getElementById('result').textContent = `O preço final é R$ ${finalPrice.toFixed(2).replace('.', ',')}`;
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
